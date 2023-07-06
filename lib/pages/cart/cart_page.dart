@@ -34,12 +34,17 @@ class CartPage extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  AppIcon(
-                    iconData: Icons.arrow_back_ios,
-                    iconSize: Dimentions.iconSize34,
-                    backGroundColor: AppColors.mainColor,
-                    iconColor: Colors.white,
-                    size: Dimentions.iconSize40,
+                  GestureDetector(
+                    onTap:(){
+                      Get.back();
+                    },
+                    child: AppIcon(
+                      iconData: Icons.arrow_back_ios,
+                      iconSize: Dimentions.iconSize34,
+                      backGroundColor: AppColors.mainColor,
+                      iconColor: Colors.white,
+                      size: Dimentions.iconSize40,
+                    ),
                   ),
                   SizedBox(
                     width: Dimentions.width100,

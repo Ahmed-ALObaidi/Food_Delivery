@@ -50,6 +50,21 @@ class LocationController extends GetxController implements GetxService {
 
   Position get pickPosition => _pickPosition;
 
+  // For  Service Zone
+  bool _isLoading = false;
+
+  bool get isLoading => _isLoading;
+
+  // Whether the user is in the service zone or not
+  bool _inZone = false;
+
+  bool get inZone => _inZone;
+
+  // this is used if the button is showen or hidden whether the map is load
+  bool _buttonDisabled = true;
+
+  bool get buttonDisabled => _buttonDisabled;
+
   void setGoogleMapController(GoogleMapController mapController) {
     _mapController = mapController;
   }
@@ -80,6 +95,14 @@ class LocationController extends GetxController implements GetxService {
               speed: 1,
               speedAccuracy: 1);
         }
+
+        final ResponseModel responseModel;
+        responseModel = await getZone(
+            position.target.latitude.toString(),
+            position.target.longitude.toString(), false);
+        // if the button is false we are in the service area
+        _buttonDisabled = !responseModel.isSuccess;
+
         if (_changeAddress) {
           String _address = await getAddressFromGeoCode(
               LatLng(position.target.latitude, position.target.longitude));
@@ -92,7 +115,9 @@ class LocationController extends GetxController implements GetxService {
       }
       _loading = false;
       update();
-    } else {}
+    } else {
+      _updateAddressData = true;
+    }
   }
 
   Future<String> getAddressFromGeoCode(LatLng latLng) async {
@@ -179,5 +204,33 @@ class LocationController extends GetxController implements GetxService {
 
   getUserAddressFromLocalStorage() {
     return locationRepo.getUserAddress();
+  }
+
+  void setAddAddressData() {
+    _position = _pickPosition;
+    _placemark = _pickPlacemark;
+    _updateAddressData = false;
+    update();
+  }
+
+  Future<ResponseModel> getZone(String lat, String lng, bool markerLoad) async{
+    late ResponseModel responseModel;
+    if (markerLoad) {
+      _loading = true;
+    } else {
+      _isLoading = true;
+    }
+    update();
+    await Future.delayed(Duration(seconds: 2), () {
+      responseModel = ResponseModel(true, 'Success');
+      if (markerLoad) {
+        _loading = false;
+      } else {
+        _isLoading = false;
+      }
+      _inZone=false;
+    },);
+    update();
+    return responseModel;
   }
 }

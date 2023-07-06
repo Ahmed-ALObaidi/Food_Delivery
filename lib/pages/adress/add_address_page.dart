@@ -72,7 +72,7 @@ class _AddAddressPageState extends State<AddAddressPage> {
         // if we don't work on the map and have a information in the local storage
         if (
             _contactPersonName.text.isEmpty) {
-          userController.getUserInfo();
+          // userController.getUserInfo();
           if (Get.find<LocationController>().addressList.isNotEmpty) {
             _addressController.text =
                 Get.find<LocationController>().getUserAddress().address;

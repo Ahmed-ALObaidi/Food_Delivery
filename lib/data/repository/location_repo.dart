@@ -40,4 +40,7 @@ class LocationRepo {
         AppConstants.USER_ADDRESS, userAddress);
   }
 
+  Future<Response> getZone(String lat,String lng)async{
+    return await apiClient.getData('${AppConstants.ZONE_URI}?lat=$lat&lng=$lng');
+  }
 }

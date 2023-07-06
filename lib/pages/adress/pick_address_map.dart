@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/base/custom_button.dart';
 import 'package:food_delivery/controllers/location_controller.dart';
+import 'package:food_delivery/routes/route_helper.dart';
 import 'package:food_delivery/utils/colors.dart';
 import 'package:food_delivery/utils/dimentions.dart';
 import 'package:food_delivery/widgets/app_icon.dart';
@@ -112,21 +113,53 @@ class _PickAddressMapState extends State<PickAddressMap> {
                       ),
                     ),
                     Positioned(
-                      top: Dimentions.height300*2.1,
+                      top: Dimentions.height300 * 2.1,
                       bottom: Dimentions.height45,
                       left: Dimentions.width20,
                       right: Dimentions.width20,
-                      child: CustomButton(
-                        buttonText: 'Pick Address',onPressed: locationController.loading?null:(){
-                          if(locationController.pickPosition.latitude!=0&&locationController.pickPlacemark.name!=null){
-                            if(widget.fromAddress){
-                              if(widget.googleMapController!=null){
-                                print('Test');
-                              }
-                            }
-                          }
-                      },
-                      ),
+                      child: locationController.isLoading
+                          ? const Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : CustomButton(
+                              buttonText: locationController.inZone
+                                  ? widget.fromAddress
+                                      ? 'Pick Address'
+                                      : 'Pick Location'
+                                  : 'Service is not available in your area',
+                              onPressed: (locationController.buttonDisabled ||
+                                      locationController.loading)
+                                  ? null
+                                  : () {
+                                      if (locationController
+                                                  .pickPosition.latitude !=
+                                              0 &&
+                                          locationController
+                                                  .pickPlacemark.name !=
+                                              null) {
+                                        if (widget.fromAddress) {
+                                          if (widget.googleMapController !=
+                                              null) {
+                                            widget.googleMapController!.moveCamera(
+                                                CameraUpdate.newCameraPosition(
+                                                    CameraPosition(
+                                                        target: LatLng(
+                                                            locationController
+                                                                .pickPosition
+                                                                .latitude,
+                                                            locationController
+                                                                .pickPosition
+                                                                .longitude))));
+                                            locationController
+                                                .setAddAddressData();
+                                          }
+                                          // Get.back(); it Coused a lot of problems
+                                          Get.toNamed(
+                                              RouteHelper.getAddressPage());
+                                        }
+                                      }
+                                    },
+                            ),
                     )
                   ],
                 ),

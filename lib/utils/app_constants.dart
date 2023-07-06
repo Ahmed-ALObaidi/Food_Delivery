@@ -22,6 +22,7 @@ static const String TOKEN = "";
 static const String PHONE = "";
 static const String PASSWORD = "";
 static const String USER_INFO_URI = "/api/v1/customer/info";
+static const String ZONE_URI = "/api/v1/config/get-zone-id";
 
 static const String CART_LIST = "Cart-list";
 static const String CART_HISTORY_LIST = "Cart-history-list";

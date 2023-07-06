@@ -9,6 +9,7 @@ import 'package:food_delivery/pages/home/home_page.dart';
 import 'package:food_delivery/pages/home/main_food_page.dart';
 import 'package:food_delivery/pages/splash/splash_page.dart';
 import 'package:food_delivery/routes/route_helper.dart';
+import 'package:food_delivery/utils/colors.dart';
 import 'package:get/get.dart';
 import 'controllers/recommended_product_controller.dart';
 import 'helper/dependencies.dart' as dep;
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
           // home: HomePage(),
           initialRoute: RouteHelper.getSplash(),
           getPages: RouteHelper.routes,
+          theme: ThemeData(primaryColor: AppColors.mainColor),
         );
       },);
     },);
